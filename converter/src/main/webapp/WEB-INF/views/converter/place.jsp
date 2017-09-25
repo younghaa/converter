@@ -4,8 +4,8 @@
 <html>
   <head>
     <title>Place details</title>
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-    <meta charset="utf-8">
+    <div id="map"></div>
+    </head>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -20,42 +20,42 @@
       }
     </style>
     <script>
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+    var map;
+    var service;
+    var infowindow;
 
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 37.496995,lng: 127.026684},
-          zoom: 16
+    function initialize() {
+      var rt = new google.maps.LatLng(37.497187, 127.026859);
+
+      map = new google.maps.Map(document.getElementById('map'), {
+          center: rt,
+          zoom: 15
         });
 
-        var infowindow = new google.maps.InfoWindow();
-        var service = new google.maps.places.PlacesService(map);
+      var request = {
+        location: rt,
+        radius: '500',
+        query: 'restaurant'
+      };
 
-        service.getDetails({
-          placeId: ''
-        }, function(place, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-            var marker = new google.maps.Marker({
-              map: map,
-              position: place.geometry.location
-            });
-            google.maps.event.addListener(marker, 'click', function() {
-              infowindow.setContent('<div><strong>' + place.name + '</strong><br>' +
-                'Place ID: ' + place.place_id + '<br>' +
-                place.formatted_address + '</div>');
-              infowindow.open(map, this);
-            });
-          }
-        });
+      service = new google.maps.places.PlacesService(map);
+      service.textSearch(request, callback);
+    }
+
+    function callback(results, status) {
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        for (var i = 0; i < results.length; i++) {
+          var place = results[i];
+          createMarker(results[i]);
+        }
       }
-    </script>
-  </head>
+    }
+</script>
   <body>
-    <div id="map"></div>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU6e2ZAsap4YbkOgBPR2r_f7Yu5VIGens&libraries=places&callback=initMap">
-    </script>
+
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU6e2ZAsap4YbkOgBPR2r_f7Yu5VIGens&libraries=places&callback=initMap">
+    </script> -->
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-b2wppFtbO-nVEcIjFYdY8z7ygFQ0YA0&libraries=places" ></script>
+    </div>
   </body>
 </html>
