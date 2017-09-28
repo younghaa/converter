@@ -33,9 +33,9 @@
         });
 
       var request = {
-        location: rt,
-        radius: '500',
-        query: 'restaurant'
+    	location : rt,
+        radius : '500',
+        query : 'restaurant'
       };
 
       service = new google.maps.places.PlacesService(map);
